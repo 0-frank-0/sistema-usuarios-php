@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Si no es un directorio real
+RewriteCond %{REQUEST_FILENAME} !-d
+# Y si no es un archivo real (como una imagen o CSS)
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Mandar todo a index.php
+RewriteRule ^ index.php [L]
