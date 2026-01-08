@@ -1,35 +1,15 @@
 <?php
-// 1. Mostrar errores para desarrollo (quitar en producción)
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+declare(strict_types=1);
 
-// 2. Obtener la ruta que el usuario escribió
-$url = $_SERVER['REQUEST_URI'] ?? '/';
+require_once __DIR__ . '/../app/controllers/HomeController.php';
 
-// 3. Limpiar la URL (quitar la carpeta del proyecto si es necesario)
-// En XAMPP, la URL suele ser /sistema-usuarios-php/public/login
-$base_path = '/sistema-usuarios-php/public';
-$route = str_replace($base_path, '', $url);
-$route = parse_url($route, PHP_URL_PATH);
+$url=$_GET['url']?? 'home/index';
 
-// 4. Enrutador simple (Router)
-switch ($route) {
-    case '/':
-    case '/home':
-        echo "Bienvenido a la página principal";
-        break;
+list($controllerName, $method) = explode('/', $url);
 
-    case '/login':
-        // Aquí podrías requerir un archivo de tu carpeta app/
-        require __DIR__ . '/../app/views/login.php';
-        break;
+$controllerName= ucfirst($controllerName) . 'Controller';
 
-    case '/usuarios':
-        echo "Lista de usuarios";
-        break;
+require_once __DIR__ . './../app/controllers/' . $controllerName . '.php';
 
-    default:
-        http_response_code(404);
-        echo "Página no encontrada (404)";
-        break;
-}
+$controller = new HomeController();
+$controller->$method();
