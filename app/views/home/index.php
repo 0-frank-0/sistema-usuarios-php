@@ -1,1 +1,2 @@
-<h1>Vista cargada correctamente</h1>
+<?php
+   require 'app/core/autoload.php';
